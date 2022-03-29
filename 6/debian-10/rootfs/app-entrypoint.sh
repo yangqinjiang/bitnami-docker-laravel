@@ -85,41 +85,40 @@ setup_db() {
 }
 
 print_welcome_page
-ls /app
 
-# if [ "${1}" == "php" ] && [ "$2" == "artisan" ] && [ "$3" == "serve" ]; then
-#     if [[ ! -d /app/app ]]; then
-#         log "Creating laravel application"
-#         cp -a /tmp/app/. /app/
-#         log "Regenerating APP_KEY"
-#         php artisan key:generate --ansi
-#     fi
+if [ "${1}" == "php" ] && [ "$2" == "artisan" ] && [ "$3" == "serve" ]; then
+    if [[ ! -d /app/app ]]; then
+        log "Creating laravel application"
+        cp -a /tmp/app/. /app/
+        log "Regenerating APP_KEY"
+        php artisan key:generate --ansi
+    fi
 
-#     log "Installing/Updating Laravel dependencies (composer)"
-#     if [[ ! -d /app/vendor ]]; then
-#         composer install
-#         log "Dependencies installed"
-#     elif [[ "${SKIP_COMPOSER_UPDATE:-false}" != "true" ]]; then
-#         composer update
-#         log "Dependencies updated"
-#     fi
+    log "Installing/Updating Laravel dependencies (composer)"
+    if [[ ! -d /app/vendor ]]; then
+        composer install
+        log "Dependencies installed"
+    elif [[ "${SKIP_COMPOSER_UPDATE:-false}" != "true" ]]; then
+        composer update
+        log "Dependencies updated"
+    fi
 
-#     wait_for_db
+    wait_for_db
 
-#     if [[ -f $INIT_SEM ]]; then
-#         echo "#########################################################################"
-#         echo "                                                                         "
-#         echo " App initialization skipped:                                             "
-#         echo " Delete the file $INIT_SEM and restart the container to reinitialize     "
-#         echo " You can alternatively run specific commands using docker-compose exec   "
-#         echo " e.g docker-compose exec myapp php artisan make:console FooCommand       "
-#         echo "                                                                         "
-#         echo "#########################################################################"
-#     else
-#         setup_db
-#         log "Initialization finished"
-#         touch $INIT_SEM
-#     fi
-# fi
+    if [[ -f $INIT_SEM ]]; then
+        echo "#########################################################################"
+        echo "                                                                         "
+        echo " App initialization skipped:                                             "
+        echo " Delete the file $INIT_SEM and restart the container to reinitialize     "
+        echo " You can alternatively run specific commands using docker-compose exec   "
+        echo " e.g docker-compose exec myapp php artisan make:console FooCommand       "
+        echo "                                                                         "
+        echo "#########################################################################"
+    else
+        setup_db
+        log "Initialization finished"
+        touch $INIT_SEM
+    fi
+fi
 
 exec tini -- "$@"
