@@ -85,6 +85,7 @@ setup_db() {
 }
 
 print_welcome_page
+ls /app
 
 # if [ "${1}" == "php" ] && [ "$2" == "artisan" ] && [ "$3" == "serve" ]; then
 #     if [[ ! -d /app/app ]]; then
